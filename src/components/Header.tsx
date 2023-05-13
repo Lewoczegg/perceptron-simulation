@@ -1,16 +1,19 @@
-import { Heading } from "@chakra-ui/react";
+import { Flex, Heading, Spacer } from "@chakra-ui/react";
+import ColorModeSwitch from "./ColorModeSwitch";
 
 const Header = () => {
   return (
-    <Heading
-      as="h1"
-      size={{ sm: "md", md: "2xl" }}
+    <Flex
       bgGradient="linear(to-r, blue.400, teal.300)"
-      p={{ base: 2, md: 4 }}
-      textAlign="center"
+      alignItems="center"
+      justifyContent="center"
     >
-      Perceptron Learning Simulation
-    </Heading>
+      <Heading as="h1" size={{ sm: "md", md: "xl" }} p={{ base: 2, md: 4 }}>
+        Perceptron Learning Simulation
+      </Heading>
+      <Spacer />
+      <ColorModeSwitch />
+    </Flex>
   );
 };
 
