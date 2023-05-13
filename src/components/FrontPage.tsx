@@ -1,5 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import FrontImage from "./FrontImage";
+import SampleDataPopover from "./SampleDataPopover";
 
 const FrontPage = () => {
   return (
@@ -15,10 +16,8 @@ const FrontPage = () => {
       <Button width="200px" colorScheme="teal">
         Load exaple data set
       </Button>
-      <Text>
-        What should the perceptron learning data file look like? Click here to
-        find out!
-      </Text>
+      <Text>What should the perceptron learning data file look like?</Text>
+      <SampleDataPopover />
     </Flex>
   );
 };
