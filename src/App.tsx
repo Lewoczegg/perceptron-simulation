@@ -1,11 +1,7 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import Header from "./components/Header";
 
 function App() {
-  return (
-    <Box>
-      <Text>Hello World</Text>
-    </Box>
-  );
+  return <Header />;
 }
 
 export default App;
