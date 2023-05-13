@@ -9,11 +9,10 @@ const FrontImage = () => {
   return (
     <Image
       src={imageSrc}
-      p={5}
       width="100%"
       maxWidth="600px"
       alt="Perceptron image"
-      mt={5}
+      marginY={5}
     />
   );
 };
