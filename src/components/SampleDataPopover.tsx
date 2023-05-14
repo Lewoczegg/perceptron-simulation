@@ -41,7 +41,7 @@ const SampleDataPopover = () => {
             </Text>
             <Code
               mb={3}
-              children="sepal length, sepal width, petal length, petal width, type"
+              children="sepal length,sepal width,petal length,petal width,type"
               noOfLines={1}
             />
             <Text mb={3}>
