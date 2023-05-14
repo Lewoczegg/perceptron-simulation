@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Tab,
   TabList,
@@ -12,6 +11,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
+import FunctionGraph from "./FunctionGraph";
 
 interface Props {
   onFunctionChange: (index: number) => void;
@@ -31,7 +31,10 @@ const PerceptronActivationFuncions = ({
   };
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFunctionChange(parseInt(event.target.value));
+    const value = parseInt(event.target.value);
+    if (!isNaN(value)) {
+      onFunctionChange(value);
+    }
   };
 
   const functions = [
@@ -91,6 +94,7 @@ const PerceptronActivationFuncions = ({
           </TabPanels>
         </Tabs>
       )}
+      <FunctionGraph index={currentFunctionIndex} />
     </Flex>
   );
 };

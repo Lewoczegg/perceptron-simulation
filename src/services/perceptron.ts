@@ -7,7 +7,7 @@ enum ActivationFunction {
   SOFTMAX_FUNCTION,
 }
 
-const ActivationFunctions = {
+export const ActivationFunctions = {
   [ActivationFunction.STEP_FUNCTION]: (x: number) => (x >= 0 ? 1 : 0),
   [ActivationFunction.BIPOLAR_STEP_FUNCTION]: (x: number) => (x < 0 ? -1 : 1),
   [ActivationFunction.SIGMOID_FUNCTION]: (x: number) => 1 / (1 + Math.exp(-x)),
