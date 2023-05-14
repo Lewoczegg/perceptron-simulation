@@ -7,6 +7,7 @@ import {
   SliderThumb,
   SliderTrack,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 
 interface Props {
@@ -15,9 +16,21 @@ interface Props {
 }
 
 const DataSeparation = ({ onSliderChange, currentSplit }: Props) => {
+  const { colorMode } = useColorMode();
+  const borderColor = colorMode === "dark" ? "white" : "black";
+
   return (
-    <Flex direction="column" align="center" p={10} gap={3}>
-      <Text align="center" mb={3}>
+    <Flex
+      direction="column"
+      align="center"
+      m={{ base: "10px", md: "30px" }}
+      p={{ base: "10px", md: "30px" }}
+      gap={3}
+      border="3px solid"
+      borderColor={borderColor}
+      borderRadius="40px"
+    >
+      <Text align="center" mb={3} fontSize="lg" fontWeight="bold">
         Separating data into training and testing sets
       </Text>
       <Flex width={{ base: "90%", md: "80%" }} justifyContent="space-between">
