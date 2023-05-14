@@ -112,6 +112,19 @@ class Perceptron {
     } while (global_error > 0.001 && epoch < max_epochs);
   }
 
+  test(inputs: Input[][], outputs: Output[]): number {
+    let correctPredictions = 0;
+    for (let i = 0; i < inputs.length; i++) {
+      this.p_inputs = inputs[i];
+      let output = outputs[i].value;
+      let prediction = this.predict(this.p_inputs);
+      if (Math.round(prediction) === output) {
+        correctPredictions++;
+      }
+    }
+    return correctPredictions / inputs.length;
+  }
+
   predict(input: Input[]): number {
     let weight_sum = 0;
     for (let weight_number = 0; weight_number < input.length; weight_number++) {
@@ -123,7 +136,23 @@ class Perceptron {
   }
 }
 
-const main = (data: string) => {
+const splitData = (
+  inputs: Input[][],
+  outputs: Output[],
+  splitRatio: number
+) => {
+  const trainSize = Math.floor(inputs.length * splitRatio);
+  const indices = [...Array(inputs.length).keys()];
+  const trainIndices = indices.slice(0, trainSize);
+  const testIndices = indices.slice(trainSize);
+  const trainInputs = trainIndices.map((i) => inputs[i]);
+  const testInputs = testIndices.map((i) => inputs[i]);
+  const trainOutputs = trainIndices.map((i) => outputs[i]);
+  const testOutputs = testIndices.map((i) => outputs[i]);
+  return { trainInputs, testInputs, trainOutputs, testOutputs };
+};
+
+const main = (data: string, splitRatio: number) => {
   let inputs: Input[][] = [];
   let outputs_string: string[] = [];
   let outputs: Output[] = [];
@@ -165,14 +194,23 @@ const main = (data: string) => {
     (output) => new Output(names[names.length - 1], outputMap[output])
   );
 
+  const { trainInputs, testInputs, trainOutputs, testOutputs } = splitData(
+    inputs,
+    outputs,
+    splitRatio
+  );
+
   const perceptron = new Perceptron(
     n,
     0.1,
     ActivationFunction.SIGMOID_FUNCTION,
     names
   );
-  perceptron.train(inputs, outputs, 100);
+  perceptron.train(trainInputs, trainOutputs, 100);
 
+  const accuracy = perceptron.test(testInputs, testOutputs);
+
+  console.log(`Accuracy: ${accuracy * 100}%`);
   console.log(perceptron);
 };
 
