@@ -2,11 +2,12 @@ import { useState } from "react";
 import DataSeparation from "./DataSeparation";
 import { motion } from "framer-motion";
 import PerceptronActivationFuncions from "./PerceptronActivationFuncions";
+import PerceptronLearningRate from "./PerceptronLearningRate";
 
 const PerceptronInputs = () => {
-  const [splitRatio, setSplitRatio] = useState<number>(80);
-  const [activationFunctionIndex, setActivationFunctionIndex] =
-    useState<number>(1);
+  const [splitRatio, setSplitRatio] = useState(80);
+  const [activationFunctionIndex, setActivationFunctionIndex] = useState(1);
+  const [learningRate, setLearningRate] = useState(0.1);
 
   return (
     <motion.div
@@ -21,6 +22,10 @@ const PerceptronInputs = () => {
       <PerceptronActivationFuncions
         currentFunctionIndex={activationFunctionIndex}
         onFunctionChange={(index) => setActivationFunctionIndex(index)}
+      />
+      <PerceptronLearningRate
+        currentLearningRate={learningRate}
+        onLearningRateChange={(value) => setLearningRate(parseFloat(value.toFixed(2)))}
       />
     </motion.div>
   );
