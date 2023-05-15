@@ -25,7 +25,9 @@ const PerceptronInputs = () => {
       />
       <PerceptronLearningRate
         currentLearningRate={learningRate}
-        onLearningRateChange={(value) => setLearningRate(parseFloat(value.toFixed(2)))}
+        onLearningRateChange={(value) =>
+          setLearningRate(parseFloat(value.toFixed(2)))
+        }
       />
     </motion.div>
   );

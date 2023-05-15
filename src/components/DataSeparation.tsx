@@ -7,8 +7,8 @@ import {
   SliderThumb,
   SliderTrack,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
+import FlexContainer from "./FlexContainer";
 
 interface Props {
   onSliderChange: (split: number) => void;
@@ -16,20 +16,8 @@ interface Props {
 }
 
 const DataSeparation = ({ onSliderChange, currentSplit }: Props) => {
-  const { colorMode } = useColorMode();
-  const borderColor = colorMode === "dark" ? "white" : "black";
-
   return (
-    <Flex
-      direction="column"
-      align="center"
-      m={{ base: "10px", md: "30px" }}
-      p={{ base: "10px", md: "30px" }}
-      gap={3}
-      border="3px solid"
-      borderColor={borderColor}
-      borderRadius="40px"
-    >
+    <FlexContainer>
       <Text align="center" mb={3} fontSize="lg" fontWeight="bold">
         Separating data into training and testing sets
       </Text>
@@ -84,7 +72,7 @@ const DataSeparation = ({ onSliderChange, currentSplit }: Props) => {
       <Text align="center">
         Select percentage by which the data will be divided into parts
       </Text>
-    </Flex>
+    </FlexContainer>
   );
 };
 

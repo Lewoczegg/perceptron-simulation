@@ -1,17 +1,16 @@
 import {
-  Flex,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   Text,
-  useColorMode,
   Select,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
 import FunctionGraph from "./FunctionGraph";
+import FlexContainer from "./FlexContainer";
 
 interface Props {
   onFunctionChange: (index: number) => void;
@@ -22,8 +21,6 @@ const PerceptronActivationFuncions = ({
   onFunctionChange,
   currentFunctionIndex,
 }: Props) => {
-  const { colorMode } = useColorMode();
-  const borderColor = colorMode === "dark" ? "white" : "black";
   const breakpoint = useBreakpointValue({ base: "base", md: "md" });
 
   const handleTabsChange = (index: number) => {
@@ -47,17 +44,7 @@ const PerceptronActivationFuncions = ({
   ];
 
   return (
-    <Flex
-      alignItems="center"
-      direction="column"
-      m={{ base: "10px", md: "30px" }}
-      p={{ base: "10px", md: "30px" }}
-      gap={3}
-      border="3px solid"
-      borderColor={borderColor}
-      borderRadius="40px"
-      textAlign="center"
-    >
+    <FlexContainer>
       <Text fontSize="lg" fontWeight="bold">
         Select perceptron activation function
       </Text>
@@ -95,7 +82,7 @@ const PerceptronActivationFuncions = ({
         </Tabs>
       )}
       <FunctionGraph index={currentFunctionIndex} />
-    </Flex>
+    </FlexContainer>
   );
 };
 

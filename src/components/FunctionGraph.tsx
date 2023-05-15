@@ -49,6 +49,7 @@ const FunctionGraph = ({ index }: Props) => {
         dataKey="value"
         stroke="#8884d8"
         activeDot={{ r: 8 }}
+        strokeWidth={3}
       />
     </LineChart>
   );

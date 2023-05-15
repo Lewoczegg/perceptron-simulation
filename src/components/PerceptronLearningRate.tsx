@@ -7,8 +7,8 @@ import {
   SliderThumb,
   SliderTrack,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
+import FlexContainer from "./FlexContainer";
 
 interface Props {
   currentLearningRate: number;
@@ -19,21 +19,8 @@ const PerceptronLearningRate = ({
   currentLearningRate,
   onLearningRateChange,
 }: Props) => {
-  const { colorMode } = useColorMode();
-  const borderColor = colorMode === "dark" ? "white" : "black";
-
   return (
-    <Flex
-      alignItems="center"
-      direction="column"
-      m={{ base: "10px", md: "30px" }}
-      p={{ base: "10px", md: "30px" }}
-      gap={3}
-      border="3px solid"
-      borderColor={borderColor}
-      borderRadius="40px"
-      textAlign="center"
-    >
+    <FlexContainer>
       <Text fontSize="lg" fontWeight="bold">
         Select perceptron learning rate
       </Text>
@@ -89,7 +76,7 @@ const PerceptronLearningRate = ({
         </SliderTrack>
         <SliderThumb bg="teal.500" />
       </Slider>
-    </Flex>
+    </FlexContainer>
   );
 };
 
