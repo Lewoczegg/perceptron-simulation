@@ -1,4 +1,4 @@
-enum ActivationFunction {
+export enum ActivationFunction {
   STEP_FUNCTION,
   BIPOLAR_STEP_FUNCTION,
   SIGMOID_FUNCTION,
