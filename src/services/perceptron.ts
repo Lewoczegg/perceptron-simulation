@@ -16,12 +16,7 @@ export const ActivationFunctions = {
   [ActivationFunction.SOFTMAX_FUNCTION]: (x: number) => Math.exp(x),
 };
 
-const uniqueStrings = (strings: string[]): string[] => {
-  const uniqueStrings = Array.from(new Set(strings));
-  return uniqueStrings;
-};
-
-class Input {
+export class Input {
   name: string;
   value: number;
 
@@ -31,7 +26,7 @@ class Input {
   }
 }
 
-class Output {
+export class Output {
   name: string;
   value: number;
 
@@ -54,7 +49,7 @@ class Perceptron {
   constructor(
     num_inputs: number,
     learning_rate: number,
-    activation_function: ActivationFunction,
+    activation_function_index: number,
     names: string[]
   ) {
     this.errors = [];
@@ -62,7 +57,7 @@ class Perceptron {
     this.p_output = new Output(names[names.length - 1], 0);
     this.num_inputs = num_inputs;
     this.learning_rate = learning_rate;
-    this.activation_function = activation_function;
+    this.activation_function = activation_function_index as ActivationFunction;
     this.weights = new Array(num_inputs).fill(0);
     this.p_inputs = new Array(num_inputs).fill(new Input("", 0));
     this.generateRandomWeights();
@@ -136,82 +131,4 @@ class Perceptron {
   }
 }
 
-const splitData = (
-  inputs: Input[][],
-  outputs: Output[],
-  splitRatio: number
-) => {
-  const trainSize = Math.floor(inputs.length * splitRatio);
-  const indices = [...Array(inputs.length).keys()];
-  const trainIndices = indices.slice(0, trainSize);
-  const testIndices = indices.slice(trainSize);
-  const trainInputs = trainIndices.map((i) => inputs[i]);
-  const testInputs = testIndices.map((i) => inputs[i]);
-  const trainOutputs = trainIndices.map((i) => outputs[i]);
-  const testOutputs = testIndices.map((i) => outputs[i]);
-  return { trainInputs, testInputs, trainOutputs, testOutputs };
-};
-
-const main = (data: string, splitRatio: number) => {
-  let inputs: Input[][] = [];
-  let outputs_string: string[] = [];
-  let outputs: Output[] = [];
-  let lines = data.split(/\r?\n/);
-  let names: string[] = [];
-
-  const firstLine = lines[0].split(",");
-  if (isNaN(Number(firstLine[0]))) {
-    firstLine.forEach((name) => names.push(name));
-    lines = lines.slice(1);
-  } else {
-    for (let i = 0; i < firstLine.length - 1; i++) {
-      names.push(`Input ${i}`);
-    }
-    names.push("Output");
-  }
-
-  const n: number = firstLine.length - 1;
-
-  lines.forEach((line) => {
-    const values = line.split(",");
-    if (values.length >= n + 1) {
-      const input = values
-        .slice(0, n)
-        .map((v, i) => new Input(names[i], Number(v)));
-      const output = values[n];
-      inputs.push(input);
-      outputs_string.push(output);
-    }
-  });
-
-  const uniqueOutputs = uniqueStrings(outputs_string);
-  const outputMap: { [key: string]: number } = {};
-  uniqueOutputs.forEach((output, i) => {
-    outputMap[output] = i;
-  });
-
-  outputs = outputs_string.map(
-    (output) => new Output(names[names.length - 1], outputMap[output])
-  );
-
-  const { trainInputs, testInputs, trainOutputs, testOutputs } = splitData(
-    inputs,
-    outputs,
-    splitRatio
-  );
-
-  const perceptron = new Perceptron(
-    n,
-    0.1,
-    ActivationFunction.SIGMOID_FUNCTION,
-    names
-  );
-  perceptron.train(trainInputs, trainOutputs, 100);
-
-  const accuracy = perceptron.test(testInputs, testOutputs);
-
-  console.log(`Accuracy: ${accuracy * 100}%`);
-  console.log(perceptron);
-};
-
-export default main;
+export default Perceptron;

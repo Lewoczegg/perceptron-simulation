@@ -1,5 +1,7 @@
 import { ReactNode, useState } from "react";
-import PerceptronContext, { PerceptronContextData } from "./PerceptronContext";
+import PerceptronContext, {
+  PerceptronContextData,
+} from "../services/PerceptronContext";
 
 interface Props {
   children: ReactNode;

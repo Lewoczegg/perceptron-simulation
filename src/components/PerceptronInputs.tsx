@@ -5,7 +5,7 @@ import PerceptronActivationFuncions from "./PerceptronActivationFuncions";
 import PerceptronLearningRate from "./PerceptronLearningRate";
 import { Button, Flex, Icon } from "@chakra-ui/react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import PerceptronContext from "./PerceptronContext";
+import PerceptronContext from "../services/PerceptronContext";
 import { Link } from "react-router-dom";
 
 const PerceptronInputs = () => {
