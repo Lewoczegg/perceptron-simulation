@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useContext } from "react";
 import DataSeparation from "./DataSeparation";
 import { motion } from "framer-motion";
 import PerceptronActivationFuncions from "./PerceptronActivationFuncions";
 import PerceptronLearningRate from "./PerceptronLearningRate";
 import { Button, Flex, Icon } from "@chakra-ui/react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import PerceptronContext from "./PerceptronContext";
+import { Link } from "react-router-dom";
 
 const PerceptronInputs = () => {
-  const [splitRatio, setSplitRatio] = useState(80);
-  const [activationFunctionIndex, setActivationFunctionIndex] = useState(1);
-  const [learningRate, setLearningRate] = useState(0.1);
+  const context = useContext(PerceptronContext);
+
+  if (!context) {
+    throw new Error(
+      "PerceptronInputs must be used within a PerceptronContext Provider"
+    );
+  }
+
+  const {
+    splitRatio,
+    setSplitRatio,
+    activationFunctionIndex,
+    setActivationFunctionIndex,
+    learningRate,
+    setLearningRate,
+  } = context;
 
   return (
     <motion.div
@@ -38,15 +53,15 @@ const PerceptronInputs = () => {
         justify="center"
         mb={3}
       >
-        <Button as="a" width="200px" colorScheme="teal" href="/learning">
+        <Button as={Link} width="200px" colorScheme="teal" to="/learning">
           Continue
         </Button>
         <Button
-          as="a"
+          as={Link}
           width="200px"
           colorScheme="teal"
           variant="outline"
-          href="/"
+          to="/"
           leftIcon={<Icon as={AiOutlineArrowLeft} />}
         >
           Cancel

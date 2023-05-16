@@ -4,24 +4,25 @@ import FrontPage from "./components/FrontPage";
 import PerceptronInputs from "./components/PerceptronInputs";
 import { AnimatePresence } from "framer-motion";
 import PerceptronLearningVisualization from "./components/PerceptronLearningVisualization";
+import PerceptronProvider from "./components/PerceptronProveder";
 
 function App() {
   const location = useLocation();
 
   return (
-    <>
+    <PerceptronProvider>
       <Header />
       <AnimatePresence>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<FrontPage />} />
           <Route path="/inputs" element={<PerceptronInputs />} />
           <Route
-            path="learning"
+            path="/learning"
             element={<PerceptronLearningVisualization />}
           />
         </Routes>
       </AnimatePresence>
-    </>
+    </PerceptronProvider>
   );
 }
 
