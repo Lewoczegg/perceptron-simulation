@@ -3,6 +3,8 @@ import DataSeparation from "./DataSeparation";
 import { motion } from "framer-motion";
 import PerceptronActivationFuncions from "./PerceptronActivationFuncions";
 import PerceptronLearningRate from "./PerceptronLearningRate";
+import { Button, Flex, Icon } from "@chakra-ui/react";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const PerceptronInputs = () => {
   const [splitRatio, setSplitRatio] = useState(80);
@@ -29,6 +31,27 @@ const PerceptronInputs = () => {
           setLearningRate(parseFloat(value.toFixed(2)))
         }
       />
+      <Flex
+        direction={{ base: "column", md: "row-reverse" }}
+        gap={{ base: 2, md: 6 }}
+        align="center"
+        justify="center"
+        mb={3}
+      >
+        <Button as="a" width="200px" colorScheme="teal" href="/learning">
+          Continue
+        </Button>
+        <Button
+          as="a"
+          width="200px"
+          colorScheme="teal"
+          variant="outline"
+          href="/"
+          leftIcon={<Icon as={AiOutlineArrowLeft} />}
+        >
+          Cancel
+        </Button>
+      </Flex>
     </motion.div>
   );
 };
