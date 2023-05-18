@@ -59,7 +59,10 @@ class Perceptron {
     this.learning_rate = learning_rate;
     this.activation_function = activation_function_index as ActivationFunction;
     this.weights = new Array(num_inputs).fill(0);
-    this.p_inputs = new Array(num_inputs).fill(new Input("", 0));
+    // this.p_inputs = new Array(num_inputs).fill(new Input("", 0));
+    this.p_inputs = new Array(num_inputs)
+      .fill(null)
+      .map((_, index) => new Input(names[index], 0));
     this.generateRandomWeights();
   }
 
@@ -128,6 +131,13 @@ class Perceptron {
     return ActivationFunctions[this.activation_function](
       weight_sum + this.bias
     );
+  }
+
+  reset(): void {
+    this.weights.fill(0);
+    this.generateRandomWeights();
+    this.bias = 0;
+    this.errors = [];
   }
 }
 

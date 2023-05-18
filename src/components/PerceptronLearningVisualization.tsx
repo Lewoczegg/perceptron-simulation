@@ -1,6 +1,6 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import PerceptronContext from "../services/PerceptronContext";
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import loadData from "../services/loadData";
 import iris from "../assets/data/data";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
@@ -16,7 +16,6 @@ const PerceptronLearningVisualization = () => {
   }
 
   const fileDataContext = useContext(FileDataContext);
-
   if (!fileDataContext) {
     throw new Error(
       "fileData context is undefined, please check your context provider"
@@ -24,36 +23,55 @@ const PerceptronLearningVisualization = () => {
   }
 
   const { fileData } = fileDataContext;
-
   let data: string;
   if (typeof fileData === "string") {
     data = fileData;
   } else {
-    console.warn(
-      "Expected fileData to be a string, using default data instead."
-    );
     data = iris;
   }
 
   const { splitRatio, activationFunctionIndex, learningRate } = context;
-  const { trainInputs, testInputs, trainOutputs, testOutputs, n, names } =
-    loadData(data, splitRatio * 0.01);
 
-  const perceptron = new Perceptron(
-    n,
-    learningRate,
-    activationFunctionIndex,
-    names
-  );
+  const [perceptron, setPerceptron] = useState<Perceptron | null>(null);
 
-  perceptron.train(trainInputs, trainOutputs, 100);
-  let accuracy = perceptron.test(testInputs, testOutputs);
-  console.log(accuracy);
-  console.log(perceptron);
-
+  const [canvasKey, setCanvasKey] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const { n, names } =
+      loadData(data, splitRatio * 0.01);
+
+    const newPerceptron = new Perceptron(
+      n,
+      learningRate,
+      activationFunctionIndex,
+      names
+    );
+
+    setPerceptron(newPerceptron);
+  }, [data, splitRatio, learningRate, activationFunctionIndex]);
+
+  const resetPerceptron = () => {
+    if (!perceptron) return;
+
+    perceptron.reset();
+    setCanvasKey((prevKey) => prevKey + 1);
+    console.log(perceptron);
+  };
+
+  const trainPerceptron = (iterations: number) => {
+    if (!perceptron) return;
+
+    const { trainInputs, trainOutputs } = loadData(data, splitRatio * 0.01);
+
+    perceptron.train(trainInputs, trainOutputs, iterations);
+    setCanvasKey((prevKey) => prevKey + 1);
+    console.log(perceptron);
+  };
+
+  useEffect(() => {
+    if (!perceptron) return;
+
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
 
@@ -127,14 +145,49 @@ const PerceptronLearningVisualization = () => {
       outputY - 30
     );
     context.stroke();
-  }, [perceptron]);
+  }, [perceptron, canvasKey]);
 
   return (
     <>
-      <Button as={Link} width="200px" colorScheme="teal" to="/inputs">
-        Settings
-      </Button>
+      <Flex justify="space-evenly" my={5}>
+        <Button
+          width="200px"
+          colorScheme="teal"
+          onClick={() => trainPerceptron(1)}
+        >
+          Train
+        </Button>
+        <Button
+          width="200px"
+          colorScheme="teal"
+          onClick={() => trainPerceptron(25)}
+        >
+          Train 25X
+        </Button>
+        <Button
+          width="200px"
+          colorScheme="teal"
+          onClick={() => trainPerceptron(50)}
+        >
+          Train 50X
+        </Button>
+        <Button width="200px" colorScheme="teal">
+          Show Plot
+        </Button>
+      </Flex>
       <canvas ref={canvasRef} width={800} height={400} />
+      <Flex justify="space-evenly" my={5}>
+        <Button as={Link} width="200px" colorScheme="teal" to="/inputs">
+          Settings
+        </Button>
+        <Button
+          width="200px"
+          colorScheme="teal"
+          onClick={() => resetPerceptron()}
+        >
+          Reset
+        </Button>
+      </Flex>
     </>
   );
 };
