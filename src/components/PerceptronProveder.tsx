@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import PerceptronContext, {
   PerceptronContextData,
 } from "../services/PerceptronContext";
+import FileDataContext from "../services/FileDataContext";
 
 interface Props {
   children: ReactNode;
@@ -13,6 +14,8 @@ const PerceptronProvider = ({ children }: Props) => {
     useState<number>(1);
   const [learningRate, setLearningRate] = useState<number>(0.1);
 
+  const [fileData, setFileData] = useState<string | ArrayBuffer | null>(null);
+
   const value: PerceptronContextData = {
     splitRatio,
     setSplitRatio,
@@ -23,9 +26,11 @@ const PerceptronProvider = ({ children }: Props) => {
   };
 
   return (
-    <PerceptronContext.Provider value={value}>
-      {children}
-    </PerceptronContext.Provider>
+    <FileDataContext.Provider value={{fileData, setFileData}}>
+      <PerceptronContext.Provider value={value}>
+        {children}
+      </PerceptronContext.Provider>
+    </FileDataContext.Provider>
   );
 };
 

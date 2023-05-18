@@ -1,7 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import FrontImage from "./FrontImage";
 import SampleDataPopover from "./SampleDataPopover";
-import { motion } from "framer-motion";
+import LoadDataFromFile from "./LoadDataFromFile";
 
 const FrontPage = () => {
   return (
@@ -16,9 +17,7 @@ const FrontPage = () => {
           To simulate the perceptron learning process, you need to choose one of
           the options:
         </Text>
-        <Button width="200px" colorScheme="teal">
-          Load data from file
-        </Button>
+        <LoadDataFromFile />
         <Button as="a" width="200px" colorScheme="teal" href="/inputs">
           Load exaple data set
         </Button>

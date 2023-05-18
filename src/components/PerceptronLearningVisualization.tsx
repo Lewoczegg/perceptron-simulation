@@ -5,6 +5,7 @@ import loadData from "../services/loadData";
 import iris from "../assets/data/data";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
 import { Link } from "react-router-dom";
+import FileDataContext from "../services/FileDataContext";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -13,9 +14,30 @@ const PerceptronLearningVisualization = () => {
       "PerceptronLearningVisualization must be used within a PerceptronContext Provider"
     );
   }
+
+  const fileDataContext = useContext(FileDataContext);
+
+  if (!fileDataContext) {
+    throw new Error(
+      "fileData context is undefined, please check your context provider"
+    );
+  }
+
+  const { fileData } = fileDataContext;
+
+  let data: string;
+  if (typeof fileData === "string") {
+    data = fileData;
+  } else {
+    console.warn(
+      "Expected fileData to be a string, using default data instead."
+    );
+    data = iris;
+  }
+
   const { splitRatio, activationFunctionIndex, learningRate } = context;
   const { trainInputs, testInputs, trainOutputs, testOutputs, n, names } =
-    loadData(iris, splitRatio * 0.01);
+    loadData(data, splitRatio * 0.01);
 
   const perceptron = new Perceptron(
     n,
@@ -26,6 +48,8 @@ const PerceptronLearningVisualization = () => {
 
   perceptron.train(trainInputs, trainOutputs, 100);
   let accuracy = perceptron.test(testInputs, testOutputs);
+  console.log(accuracy);
+  console.log(perceptron);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -51,6 +75,7 @@ const PerceptronLearningVisualization = () => {
     const outputY = canvasHeight / 2;
 
     // Draw input nodes and weights
+    context.lineWidth = 2;
     for (let i = 0; i < perceptron.num_inputs; i++) {
       const inputY = (i + 1) * inputSpacing;
       const weight = perceptron.weights[i];
