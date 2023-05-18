@@ -1,11 +1,16 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import PerceptronContext from "../services/PerceptronContext";
-import { Button, Flex, useColorMode } from "@chakra-ui/react";
-import loadData from "../services/loadData";
-import iris from "../assets/data/data";
-import Perceptron, { ActivationFunction } from "../services/perceptron";
+import {
+  Button,
+  Flex,
+  useColorMode,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Perceptron, { ActivationFunction } from "../services/perceptron";
+import loadData from "../services/loadData";
 import FileDataContext from "../services/FileDataContext";
+import iris from "../assets/data/data";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -37,6 +42,9 @@ const PerceptronLearningVisualization = () => {
   const [canvasKey, setCanvasKey] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const shouldDisplayNames = useBreakpointValue({ base: false, md: true });
+  const inputXMargin = useBreakpointValue({ base: 20, md: 60 }) || 20;
+
   useEffect(() => {
     const { n, names } = loadData(data, splitRatio * 0.01);
 
@@ -55,7 +63,6 @@ const PerceptronLearningVisualization = () => {
 
     perceptron.reset();
     setCanvasKey((prevKey) => prevKey + 1);
-    console.log(perceptron);
   };
 
   const trainPerceptron = (iterations: number) => {
@@ -65,7 +72,6 @@ const PerceptronLearningVisualization = () => {
 
     perceptron.train(trainInputs, trainOutputs, iterations);
     setCanvasKey((prevKey) => prevKey + 1);
-    console.log(perceptron);
   };
 
   const { colorMode } = useColorMode();
@@ -80,6 +86,17 @@ const PerceptronLearningVisualization = () => {
       return;
     }
 
+    // Compute the display size of the canvas.
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    // Check if the canvas size is the same as its display size.
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      // Make the canvas the same size
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+    }
+
     // Clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -88,13 +105,13 @@ const PerceptronLearningVisualization = () => {
     context.strokeStyle = colorMode === "dark" ? "white" : "black";
 
     // Set up visualization parameters
-    const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    const canvasWidth = canvas.width;
     const inputSpacing = canvasHeight / (perceptron.num_inputs + 2);
-    const inputX = inputSpacing;
+    const inputX = inputXMargin;
     const activationFunctionX = canvasWidth / 2;
     const activationFunctionY = canvasHeight / 2;
-    const outputX = canvasWidth - inputSpacing;
+    const outputX = canvasWidth - inputXMargin;
     const outputY = canvasHeight / 2;
 
     // Draw input nodes and weights
@@ -104,7 +121,9 @@ const PerceptronLearningVisualization = () => {
       const weight = perceptron.weights[i];
       context.beginPath();
       context.arc(inputX, inputY, 10, 0, 2 * Math.PI);
-      context.fillText(perceptron.p_inputs[i].name, inputX - 10, inputY + 20);
+      if (shouldDisplayNames) {
+        context.fillText(perceptron.p_inputs[i].name, inputX - 5, inputY + 25);
+      }
       context.stroke();
 
       // Draw weight line
@@ -127,11 +146,13 @@ const PerceptronLearningVisualization = () => {
     // Draw activation function node
     context.beginPath();
     context.arc(activationFunctionX, activationFunctionY, 10, 0, 2 * Math.PI);
-    context.fillText(
-      ActivationFunction[perceptron.activation_function],
-      activationFunctionX,
-      activationFunctionY + 30
-    );
+    if (shouldDisplayNames) {
+      context.fillText(
+        ActivationFunction[perceptron.activation_function],
+        activationFunctionX,
+        activationFunctionY + 30
+      );
+    }
     context.stroke();
 
     // Draw activation function to output line
@@ -150,7 +171,7 @@ const PerceptronLearningVisualization = () => {
       outputY - 30
     );
     context.stroke();
-  }, [perceptron, canvasKey, colorMode]);
+  }, [perceptron, canvasKey, colorMode, shouldDisplayNames, inputXMargin]);
 
   return (
     <>
@@ -180,7 +201,7 @@ const PerceptronLearningVisualization = () => {
           Show Plot
         </Button>
       </Flex>
-      <canvas ref={canvasRef} width={800} height={400} />
+      <canvas ref={canvasRef} className="canvas" />
       <Flex justify="space-evenly" my={5}>
         <Button as={Link} width="200px" colorScheme="teal" to="/inputs">
           Settings
