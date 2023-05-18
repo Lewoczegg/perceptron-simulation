@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import PerceptronContext from "../services/PerceptronContext";
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, useColorMode } from "@chakra-ui/react";
 import loadData from "../services/loadData";
 import iris from "../assets/data/data";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
@@ -38,8 +38,7 @@ const PerceptronLearningVisualization = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const { n, names } =
-      loadData(data, splitRatio * 0.01);
+    const { n, names } = loadData(data, splitRatio * 0.01);
 
     const newPerceptron = new Perceptron(
       n,
@@ -69,6 +68,8 @@ const PerceptronLearningVisualization = () => {
     console.log(perceptron);
   };
 
+  const { colorMode } = useColorMode();
+
   useEffect(() => {
     if (!perceptron) return;
 
@@ -81,6 +82,10 @@ const PerceptronLearningVisualization = () => {
 
     // Clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Set up colors based on color mode
+    context.fillStyle = colorMode === "dark" ? "white" : "black";
+    context.strokeStyle = colorMode === "dark" ? "white" : "black";
 
     // Set up visualization parameters
     const canvasWidth = canvas.width;
@@ -113,7 +118,7 @@ const PerceptronLearningVisualization = () => {
       const weightTextY = inputY + (activationFunctionY - inputY) / 3;
 
       // Draw weight text
-      context.fillStyle = "black";
+      context.fillStyle = colorMode === "dark" ? "white" : "black";
       context.font = "12px Arial";
       context.textAlign = "center";
       context.fillText(weight.toFixed(2), weightTextX, weightTextY - 10);
@@ -124,7 +129,7 @@ const PerceptronLearningVisualization = () => {
     context.arc(activationFunctionX, activationFunctionY, 10, 0, 2 * Math.PI);
     context.fillText(
       ActivationFunction[perceptron.activation_function],
-      activationFunctionX - 50,
+      activationFunctionX,
       activationFunctionY + 30
     );
     context.stroke();
@@ -145,7 +150,7 @@ const PerceptronLearningVisualization = () => {
       outputY - 30
     );
     context.stroke();
-  }, [perceptron, canvasKey]);
+  }, [perceptron, canvasKey, colorMode]);
 
   return (
     <>
