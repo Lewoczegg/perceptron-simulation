@@ -122,7 +122,9 @@ const PerceptronLearningVisualization = () => {
       context.beginPath();
       context.arc(inputX, inputY, 10, 0, 2 * Math.PI);
       if (shouldDisplayNames) {
-        context.fillText(perceptron.p_inputs[i].name, inputX - 5, inputY + 25);
+        context.font = "12px Arial";
+        context.textAlign = "left";
+        context.fillText(perceptron.p_inputs[i].name, inputX - 40, inputY + 25);
       }
       context.stroke();
 
