@@ -209,7 +209,10 @@ const PerceptronLearningVisualization = () => {
         >
           Train 50X
         </Button>
-        <ShowPlotModal errors={perceptron?.errors || []} />
+        <ShowPlotModal
+          errors={perceptron?.errors || []}
+          accuracy={perceptron?.testResults || []}
+        />
       </Flex>
       <canvas ref={canvasRef} className="canvas" />
       <Flex justify="space-evenly" my={5}>
