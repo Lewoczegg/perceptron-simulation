@@ -37,14 +37,15 @@ export class Output {
 }
 
 class Perceptron {
-  num_inputs: number;
-  p_output: Output;
-  p_inputs: Input[];
-  weights: number[];
-  errors: number[];
   activation_function: ActivationFunction;
-  learning_rate: number;
   bias: number;
+  errors: number[];
+  learning_rate: number;
+  num_inputs: number;
+  p_inputs: Input[];
+  p_output: Output;
+  testResults: number[];
+  weights: number[];
 
   constructor(
     num_inputs: number,
@@ -64,6 +65,7 @@ class Perceptron {
       .fill(null)
       .map((_, index) => new Input(names[index], 0));
     this.generateRandomWeights();
+    this.testResults = [];
   }
 
   generateRandomWeights(): void {
@@ -79,7 +81,13 @@ class Perceptron {
     }
   }
 
-  train(inputs: Input[][], outputs: Output[], max_epochs: number): void {
+  train(
+    inputs: Input[][],
+    outputs: Output[],
+    testInputs: Input[][],
+    testOutputs: Output[],
+    max_epochs: number
+  ): void {
     let epoch = 0;
     let global_error: number;
     do {
@@ -105,6 +113,7 @@ class Perceptron {
           this.updateWeights(error);
         }
       }
+      this.testResults.push(this.test(testInputs, testOutputs));
       epoch++;
       this.errors.push(global_error);
     } while (global_error > 0.001 && epoch < max_epochs);
@@ -134,10 +143,11 @@ class Perceptron {
   }
 
   reset(): void {
-    this.weights.fill(0);
-    this.generateRandomWeights();
     this.bias = 0;
     this.errors = [];
+    this.generateRandomWeights();
+    this.testResults = [];
+    this.weights.fill(0);
   }
 }
 

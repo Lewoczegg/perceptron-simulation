@@ -11,7 +11,7 @@ interface Props {
 const PerceptronProvider = ({ children }: Props) => {
   const [splitRatio, setSplitRatio] = useState<number>(80);
   const [activationFunctionIndex, setActivationFunctionIndex] =
-    useState<number>(1);
+    useState<number>(2);
   const [learningRate, setLearningRate] = useState<number>(0.1);
 
   const [fileData, setFileData] = useState<string | ArrayBuffer | null>(null);
@@ -26,7 +26,7 @@ const PerceptronProvider = ({ children }: Props) => {
   };
 
   return (
-    <FileDataContext.Provider value={{fileData, setFileData}}>
+    <FileDataContext.Provider value={{ fileData, setFileData }}>
       <PerceptronContext.Provider value={value}>
         {children}
       </PerceptronContext.Provider>

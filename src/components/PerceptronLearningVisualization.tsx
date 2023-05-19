@@ -68,9 +68,18 @@ const PerceptronLearningVisualization = () => {
   const trainPerceptron = (iterations: number) => {
     if (!perceptron) return;
 
-    const { trainInputs, trainOutputs } = loadData(data, splitRatio * 0.01);
+    const { trainInputs, trainOutputs, testInputs, testOutputs } = loadData(
+      data,
+      splitRatio * 0.01
+    );
 
-    perceptron.train(trainInputs, trainOutputs, iterations);
+    perceptron.train(
+      trainInputs,
+      trainOutputs,
+      testInputs,
+      testOutputs,
+      iterations
+    );
     setCanvasKey((prevKey) => prevKey + 1);
   };
 
@@ -199,7 +208,11 @@ const PerceptronLearningVisualization = () => {
         >
           Train 50X
         </Button>
-        <Button width="200px" colorScheme="teal">
+        <Button
+          width="200px"
+          colorScheme="teal"
+          onClick={() => console.log(perceptron)}
+        >
           Show Plot
         </Button>
       </Flex>
