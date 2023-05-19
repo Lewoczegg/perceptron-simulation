@@ -11,6 +11,7 @@ import Perceptron, { ActivationFunction } from "../services/perceptron";
 import loadData from "../services/loadData";
 import FileDataContext from "../services/FileDataContext";
 import iris from "../assets/data/data";
+import ShowPlotModal from "./ShowPlotModal";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -208,13 +209,7 @@ const PerceptronLearningVisualization = () => {
         >
           Train 50X
         </Button>
-        <Button
-          width="200px"
-          colorScheme="teal"
-          onClick={() => console.log(perceptron)}
-        >
-          Show Plot
-        </Button>
+        <ShowPlotModal errors={perceptron?.errors || []} />
       </Flex>
       <canvas ref={canvasRef} className="canvas" />
       <Flex justify="space-evenly" my={5}>
