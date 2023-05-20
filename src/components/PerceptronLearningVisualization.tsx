@@ -76,6 +76,7 @@ const PerceptronLearningVisualization = () => {
       splitRatio * 0.01
     );
 
+    const oldWeights = [...perceptron.weights];
     perceptron.train(
       trainInputs,
       trainOutputs,
@@ -83,6 +84,25 @@ const PerceptronLearningVisualization = () => {
       testOutputs,
       iterations
     );
+
+    const newIncreasedLines: number[] = [];
+    const newDecreasedLines: number[] = [];
+    for (let i = 0; i < oldWeights.length; i++) {
+      if (oldWeights[i] < perceptron.weights[i]) {
+        newIncreasedLines.push(i);
+      } else if (oldWeights[i] > perceptron.weights[i]) {
+        newDecreasedLines.push(i);
+      }
+    }
+
+    setIncreasedLines(newIncreasedLines);
+    setDecreasedLines(newDecreasedLines);
+
+    setTimeout(() => {
+      setIncreasedLines([]);
+      setDecreasedLines([]);
+    }, 1000);
+
     setCanvasKey((prevKey) => prevKey + 1);
   };
 
@@ -93,6 +113,9 @@ const PerceptronLearningVisualization = () => {
     { x: number; y: number; weight: number }[]
   >([]);
   const [lines, setLines] = useState<{ points: number[] }[]>([]);
+
+  const [increasedLines, setIncreasedLines] = useState<number[]>([]);
+  const [decreasedLines, setDecreasedLines] = useState<number[]>([]);
 
   useEffect(() => {
     if (!perceptron) return;
@@ -213,7 +236,17 @@ const PerceptronLearningVisualization = () => {
             />
           ))}
           {lines.map((line, index) => (
-            <Line key={index} points={line.points} stroke={canvasColor} />
+            <Line
+              key={index}
+              points={line.points}
+              stroke={
+                increasedLines.includes(index)
+                  ? "green"
+                  : decreasedLines.includes(index)
+                  ? "red"
+                  : canvasColor
+              }
+            />
           ))}
         </Layer>
       </Stage>
