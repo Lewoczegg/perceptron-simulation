@@ -14,6 +14,7 @@ import iris from "../assets/data/data";
 import ShowPlotModal from "./ShowPlotModal";
 import { Circle, Layer, Line, Stage, Text } from "react-konva";
 import React from "react";
+import useWindowSize from "../hooks/useWindowSize";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -45,6 +46,7 @@ const PerceptronLearningVisualization = () => {
   const inputXMargin = useBreakpointValue({ base: 20, md: 60 }) || 20;
   const { colorMode } = useColorMode();
   const canvasColor = colorMode === "dark" ? "white" : "black";
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     const { n, names } = loadData(data, splitRatio * 0.01);
@@ -96,8 +98,8 @@ const PerceptronLearningVisualization = () => {
     if (!perceptron) return;
 
     // Set up visualization parameters
-    const canvasHeight = 500;
-    const canvasWidth = 800;
+    const canvasHeight = 800;
+    const canvasWidth = windowSize.width;
     const inputSpacing = canvasHeight / (perceptron.num_inputs + 2);
     const inputX = inputXMargin;
     const activationFunctionX = canvasWidth / 2;
@@ -154,7 +156,7 @@ const PerceptronLearningVisualization = () => {
     setNodes(newNodes);
     setWeights(newWeights);
     setLines(newLines);
-  }, [perceptron, canvasKey]);
+  }, [perceptron, canvasKey, windowSize]);
 
   return (
     <>
@@ -185,7 +187,7 @@ const PerceptronLearningVisualization = () => {
           accuracy={perceptron?.testResults || []}
         />
       </Flex>
-      <Stage width={800} height={500}>
+      <Stage width={windowSize.width} height={600}>
         <Layer>
           {nodes.map((node, index) => (
             <React.Fragment key={index}>
