@@ -142,7 +142,7 @@ const PerceptronLearningVisualization = () => {
         y: inputY,
         name: perceptron.p_inputs[i].name,
       });
-      newWeights.push({ x: inputX, y: inputY - 30, weight: weight });
+      newWeights.push({ x: inputX, y: inputY - 35, weight: weight });
     }
 
     // Draw activation function node
@@ -160,18 +160,18 @@ const PerceptronLearningVisualization = () => {
       const inputY = (i + 1) * inputSpacing;
       newLines.push({
         points: [
-          inputX + 10,
+          inputX + 15,
           inputY,
-          activationFunctionX - 10,
+          activationFunctionX - 15,
           activationFunctionY,
         ],
       }); // Line from input to activation function
     }
     newLines.push({
       points: [
-        activationFunctionX + 10,
+        activationFunctionX + 15,
         activationFunctionY,
-        outputX - 10,
+        outputX - 15,
         outputY,
       ],
     }); // Line from activation function to output
@@ -214,11 +214,17 @@ const PerceptronLearningVisualization = () => {
         <Layer>
           {nodes.map((node, index) => (
             <React.Fragment key={index}>
-              <Circle x={node.x} y={node.y} radius={10} stroke={canvasColor} />
+              <Circle
+                x={node.x}
+                y={node.y}
+                radius={15}
+                stroke={canvasColor}
+                strokeWidth={3}
+              />
               {shouldDisplayNames && (
                 <Text
                   x={node.x - 30}
-                  y={node.y + 15}
+                  y={node.y + 25}
                   text={node.name}
                   fontSize={12}
                   fill={canvasColor}
@@ -246,6 +252,7 @@ const PerceptronLearningVisualization = () => {
                   ? "red"
                   : canvasColor
               }
+              strokeWidth={3}
             />
           ))}
         </Layer>
