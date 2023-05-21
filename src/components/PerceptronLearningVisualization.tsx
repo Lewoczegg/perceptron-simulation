@@ -121,7 +121,7 @@ const PerceptronLearningVisualization = () => {
     if (!perceptron) return;
 
     // Set up visualization parameters
-    const canvasHeight = 800;
+    const canvasHeight = perceptron.num_inputs * 180;
     const canvasWidth = windowSize.width;
     const inputSpacing = canvasHeight / (perceptron.num_inputs + 2);
     const inputX = inputXMargin;
@@ -210,7 +210,7 @@ const PerceptronLearningVisualization = () => {
           accuracy={perceptron?.testResults || []}
         />
       </Flex>
-      <Stage width={windowSize.width} height={600}>
+      <Stage width={windowSize.width} height={perceptron?.num_inputs === undefined ? 800 : perceptron?.num_inputs * 180}>
         <Layer>
           {nodes.map((node, index) => (
             <React.Fragment key={index}>
