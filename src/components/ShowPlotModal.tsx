@@ -33,7 +33,11 @@ const ShowPlotModal = ({ errors, accuracy }: Props) => {
 
   return (
     <>
-      <Button width="200px" colorScheme="teal" onClick={onOpen}>
+      <Button
+        width={{ base: "100px", md: "200px" }}
+        colorScheme="teal"
+        onClick={onOpen}
+      >
         Show Plot
       </Button>
 

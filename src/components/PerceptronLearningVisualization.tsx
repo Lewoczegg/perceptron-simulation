@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import PerceptronContext from "../services/PerceptronContext";
 import {
   Button,
-  Flex,
   useColorMode,
   useBreakpointValue,
+  Grid,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
@@ -188,7 +188,7 @@ const PerceptronLearningVisualization = () => {
     setNodes(newNodes);
     setWeights(newWeights);
     setLines(newLines);
-  }, [perceptron, canvasKey, windowSize, nodes]);
+  }, [perceptron, canvasKey, windowSize]);
 
   const handleDragEnd = (index: number, e: KonvaEventObject<DragEvent>) => {
     const { x, y } = e.target.position();
@@ -197,27 +197,34 @@ const PerceptronLearningVisualization = () => {
     updatedNodes[index] = { ...updatedNodes[index], x, y };
 
     setNodes(updatedNodes);
+    setCanvasKey((prevKey) => prevKey + 1);
   };
 
   return (
     <>
-      <Flex justify="space-evenly" my={5}>
+      <Grid
+        templateColumns="repeat(3, 1fr)"
+        justifyItems="center"
+        my={{ base: 1, md: 3 }}
+        mx={{ base: 1, md: 3 }}
+        gap={{ base: 1, md: 3 }}
+      >
         <Button
-          width="200px"
+          width={{ base: "100px", md: "200px" }}
           colorScheme="teal"
           onClick={() => trainPerceptron(1)}
         >
           Train
         </Button>
         <Button
-          width="200px"
+          width={{ base: "100px", md: "200px" }}
           colorScheme="teal"
           onClick={() => trainPerceptron(25)}
         >
           Train 25X
         </Button>
         <Button
-          width="200px"
+          width={{ base: "100px", md: "200px" }}
           colorScheme="teal"
           onClick={() => trainPerceptron(50)}
         >
@@ -227,7 +234,22 @@ const PerceptronLearningVisualization = () => {
           errors={perceptron?.errors || []}
           accuracy={perceptron?.testResults || []}
         />
-      </Flex>
+        <Button
+          as={Link}
+          width={{ base: "100px", md: "200px" }}
+          colorScheme="teal"
+          to="/inputs"
+        >
+          Settings
+        </Button>
+        <Button
+          width={{ base: "100px", md: "200px" }}
+          colorScheme="teal"
+          onClick={() => resetPerceptron()}
+        >
+          Reset
+        </Button>
+      </Grid>
       <Stage
         width={windowSize.width}
         height={
@@ -284,18 +306,6 @@ const PerceptronLearningVisualization = () => {
           ))}
         </Layer>
       </Stage>
-      <Flex justify="space-evenly" my={5}>
-        <Button as={Link} width="200px" colorScheme="teal" to="/inputs">
-          Settings
-        </Button>
-        <Button
-          width="200px"
-          colorScheme="teal"
-          onClick={() => resetPerceptron()}
-        >
-          Reset
-        </Button>
-      </Flex>
     </>
   );
 };
