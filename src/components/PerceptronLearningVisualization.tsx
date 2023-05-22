@@ -15,6 +15,7 @@ import ShowPlotModal from "./ShowPlotModal";
 import { Circle, Layer, Line, Stage, Text } from "react-konva";
 import React from "react";
 import useWindowSize from "../hooks/useWindowSize";
+import { KonvaEventObject } from "konva/lib/Node";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -138,48 +139,65 @@ const PerceptronLearningVisualization = () => {
       const inputY = (i + 1) * inputSpacing;
       const weight = perceptron.weights[i];
       newNodes.push({
-        x: inputX,
-        y: inputY,
+        x: nodes[i]?.x || inputX,
+        y: nodes[i]?.y || inputY,
         name: perceptron.p_inputs[i].name,
       });
-      newWeights.push({ x: inputX, y: inputY - 35, weight: weight });
+      newWeights.push({
+        x: nodes[i]?.x || inputX,
+        y: nodes[i]?.y - 35 || inputY - 35,
+        weight: weight,
+      });
     }
 
     // Draw activation function node
     newNodes.push({
-      x: activationFunctionX,
-      y: activationFunctionY,
+      x: nodes[perceptron.num_inputs]?.x || activationFunctionX,
+      y: nodes[perceptron.num_inputs]?.y || activationFunctionY,
       name: ActivationFunction[perceptron.activation_function],
     });
 
     // Draw output node
-    newNodes.push({ x: outputX, y: outputY, name: perceptron.p_output.name });
+    newNodes.push({
+      x: nodes[perceptron.num_inputs + 1]?.x || outputX,
+      y: nodes[perceptron.num_inputs + 1]?.y || outputY,
+      name: perceptron.p_output.name,
+    });
 
     const newLines = [];
     for (let i = 0; i < perceptron.num_inputs; i++) {
       const inputY = (i + 1) * inputSpacing;
       newLines.push({
         points: [
-          inputX + 15,
-          inputY,
-          activationFunctionX - 15,
-          activationFunctionY,
+          nodes[i]?.x + 15 || inputX + 15,
+          nodes[i]?.y || inputY,
+          nodes[perceptron.num_inputs]?.x - 15 || activationFunctionX - 15,
+          nodes[perceptron.num_inputs]?.y || activationFunctionY,
         ],
       }); // Line from input to activation function
     }
     newLines.push({
       points: [
-        activationFunctionX + 15,
-        activationFunctionY,
-        outputX - 15,
-        outputY,
+        nodes[perceptron.num_inputs]?.x + 15 || activationFunctionX + 15,
+        nodes[perceptron.num_inputs]?.y || activationFunctionY,
+        nodes[perceptron.num_inputs + 1]?.x - 15 || outputX - 15,
+        nodes[perceptron.num_inputs + 1]?.y || outputY,
       ],
     }); // Line from activation function to output
 
     setNodes(newNodes);
     setWeights(newWeights);
     setLines(newLines);
-  }, [perceptron, canvasKey, windowSize]);
+  }, [perceptron, canvasKey, windowSize, nodes]);
+
+  const handleDragEnd = (index: number, e: KonvaEventObject<DragEvent>) => {
+    const { x, y } = e.target.position();
+
+    const updatedNodes = [...nodes];
+    updatedNodes[index] = { ...updatedNodes[index], x, y };
+
+    setNodes(updatedNodes);
+  };
 
   return (
     <>
@@ -210,7 +228,14 @@ const PerceptronLearningVisualization = () => {
           accuracy={perceptron?.testResults || []}
         />
       </Flex>
-      <Stage width={windowSize.width} height={perceptron?.num_inputs === undefined ? 800 : perceptron?.num_inputs * 180}>
+      <Stage
+        width={windowSize.width}
+        height={
+          perceptron?.num_inputs === undefined
+            ? 800
+            : perceptron?.num_inputs * 180
+        }
+      >
         <Layer>
           {nodes.map((node, index) => (
             <React.Fragment key={index}>
@@ -220,6 +245,8 @@ const PerceptronLearningVisualization = () => {
                 radius={15}
                 stroke={canvasColor}
                 strokeWidth={3}
+                draggable
+                onDragEnd={(e) => handleDragEnd(index, e)}
               />
               {shouldDisplayNames && (
                 <Text
