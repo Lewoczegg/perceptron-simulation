@@ -16,7 +16,7 @@ export const ActivationFunctions = {
   [ActivationFunction.SOFTMAX_FUNCTION]: (x: number) => Math.exp(x),
 };
 
-export class Input {
+export class PerceptronInput {
   name: string;
   value: number;
 
@@ -42,7 +42,7 @@ class Perceptron {
   errors: number[];
   learning_rate: number;
   num_inputs: number;
-  p_inputs: Input[];
+  p_inputs: PerceptronInput[];
   p_output: Output;
   testResults: number[];
   weights: number[];
@@ -63,7 +63,7 @@ class Perceptron {
     // this.p_inputs = new Array(num_inputs).fill(new Input("", 0));
     this.p_inputs = new Array(num_inputs)
       .fill(null)
-      .map((_, index) => new Input(names[index], 0));
+      .map((_, index) => new PerceptronInput(names[index], 0));
     this.generateRandomWeights();
     this.testResults = [];
   }
@@ -82,9 +82,9 @@ class Perceptron {
   }
 
   train(
-    inputs: Input[][],
+    inputs: PerceptronInput[][],
     outputs: Output[],
-    testInputs: Input[][],
+    testInputs: PerceptronInput[][],
     testOutputs: Output[],
     max_epochs: number
   ): void {
@@ -119,7 +119,7 @@ class Perceptron {
     } while (global_error > 0.001 && epoch < max_epochs);
   }
 
-  test(inputs: Input[][], outputs: Output[]): number {
+  test(inputs: PerceptronInput[][], outputs: Output[]): number {
     let correctPredictions = 0;
     for (let i = 0; i < inputs.length; i++) {
       this.p_inputs = inputs[i];
@@ -132,7 +132,7 @@ class Perceptron {
     return correctPredictions / inputs.length;
   }
 
-  predict(input: Input[]): number {
+  predict(input: PerceptronInput[]): number {
     let weight_sum = 0;
     for (let weight_number = 0; weight_number < input.length; weight_number++) {
       weight_sum += input[weight_number].value * this.weights[weight_number];

@@ -1,4 +1,4 @@
-import { Input, Output } from "./perceptron";
+import { PerceptronInput, Output } from "./perceptron";
 
 const uniqueStrings = (strings: string[]): string[] => {
   const uniqueStrings = Array.from(new Set(strings));
@@ -6,7 +6,7 @@ const uniqueStrings = (strings: string[]): string[] => {
 };
 
 const splitData = (
-  inputs: Input[][],
+  inputs: PerceptronInput[][],
   outputs: Output[],
   splitRatio: number
 ) => {
@@ -22,7 +22,7 @@ const splitData = (
 };
 
 const loadData = (data: string, splitRatio: number) => {
-  let inputs: Input[][] = [];
+  let inputs: PerceptronInput[][] = [];
   let outputs_string: string[] = [];
   let outputs: Output[] = [];
   let lines = data.split(/\r?\n/);
@@ -46,7 +46,7 @@ const loadData = (data: string, splitRatio: number) => {
     if (values.length >= n + 1) {
       const input = values
         .slice(0, n)
-        .map((v, i) => new Input(names[i], Number(v)));
+        .map((v, i) => new PerceptronInput(names[i], Number(v)));
       const output = values[n];
       inputs.push(input);
       outputs_string.push(output);

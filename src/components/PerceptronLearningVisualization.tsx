@@ -17,6 +17,7 @@ import { Circle, Layer, Line, Stage, Text } from "react-konva";
 import React from "react";
 import useWindowSize from "../hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
+import CalculateOutput from "./CalculateOutput";
 
 const PerceptronLearningVisualization = () => {
   const context = useContext(PerceptronContext);
@@ -234,6 +235,9 @@ const PerceptronLearningVisualization = () => {
         <ShowPlotModal
           errors={perceptron?.errors || []}
           accuracy={perceptron?.testResults || []}
+        />
+        <CalculateOutput
+          perceptron={perceptron || new Perceptron(0, 0, 0, [])}
         />
         <Button
           width={{ base: "100px", md: "200px" }}
