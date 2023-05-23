@@ -5,6 +5,7 @@ import {
   useColorMode,
   useBreakpointValue,
   Grid,
+  Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
@@ -235,14 +236,6 @@ const PerceptronLearningVisualization = () => {
           accuracy={perceptron?.testResults || []}
         />
         <Button
-          as={Link}
-          width={{ base: "100px", md: "200px" }}
-          colorScheme="teal"
-          to="/inputs"
-        >
-          Settings
-        </Button>
-        <Button
           width={{ base: "100px", md: "200px" }}
           colorScheme="teal"
           onClick={() => resetPerceptron()}
@@ -306,6 +299,14 @@ const PerceptronLearningVisualization = () => {
           ))}
         </Layer>
       </Stage>
+      <Flex justifyContent="space-evenly" m={3} gap={3}>
+        <Button as={Link} width="200px" colorScheme="green" to="/inputs">
+          Settings
+        </Button>
+        <Button as={Link} width="200px" colorScheme="red" to="/">
+          Main Page
+        </Button>
+      </Flex>
     </>
   );
 };
