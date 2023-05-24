@@ -5,12 +5,14 @@ import App from "./App.tsx";
 import theme from "./theme.ts";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
+import ScrollToTop from "./services/scrollToTop.ts";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <BrowserRouter>
+        <ScrollToTop />
         <App />
       </BrowserRouter>
     </ChakraProvider>

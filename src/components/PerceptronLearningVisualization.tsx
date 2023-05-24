@@ -7,6 +7,7 @@ import {
   Grid,
   Flex,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Perceptron, { ActivationFunction } from "../services/perceptron";
 import loadData from "../services/loadData";
@@ -203,7 +204,7 @@ const PerceptronLearningVisualization = () => {
   };
 
   return (
-    <>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <Grid
         templateColumns="repeat(3, 1fr)"
         justifyItems="center"
@@ -311,7 +312,7 @@ const PerceptronLearningVisualization = () => {
           Main Page
         </Button>
       </Flex>
-    </>
+    </motion.div>
   );
 };
 
