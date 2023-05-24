@@ -6,7 +6,16 @@ import LoadDataFromFile from "./LoadDataFromFile";
 
 const FrontPage = () => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <motion.div
+      initial={{ x: 300, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: 300, opacity: 0 }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+      }}
+    >
       <Flex direction="column" align="center" p={5} gap={4}>
         <FrontImage />
         <Text fontSize={{ base: "large", md: "2xl" }}>
