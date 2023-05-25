@@ -44,7 +44,7 @@ This project is a visualization of the learning algorithm for a single perceptro
 ### Mobile
 
 <div display="flex">
-<img src="src/assets/screenshots/front-page-dark-pobile.png" alt="Mobile Screenshot" width="24%"/>
+<img src="src/assets/screenshots/front-page-dark-mobile.png" alt="Mobile Screenshot" width="24%"/>
 <img src="src/assets/screenshots/front-page-light-mobile.png" alt="Mobile Screenshot" width="24%"/>
 <img src="src/assets/screenshots/settings1-dark-mobile.png" alt="Mobile Screenshot" width="24%"/>
 <img src="src/assets/screenshots/settings1-light-mobile.png" alt="Mobile Screenshot" width="24%"/>
