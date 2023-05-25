@@ -4,7 +4,6 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   FormControl,
@@ -66,8 +65,8 @@ const CalculateOutput = ({ perceptron }: Props) => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Calculate Output</DrawerHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DrawerBody>
+          <DrawerBody mb={4}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               {perceptron.p_inputs.map((input, index) => (
                 <FormControl key={index} mb={1}>
                   <FormLabel>{input.name}</FormLabel>
@@ -81,13 +80,16 @@ const CalculateOutput = ({ perceptron }: Props) => {
                   )}
                 </FormControl>
               ))}
-            </DrawerBody>
-            <DrawerFooter>
-              <Button colorScheme="teal" type="submit">
+              <Button
+                my={3}
+                style={{ float: "right" }}
+                colorScheme="teal"
+                type="submit"
+              >
                 Calculate
               </Button>
-            </DrawerFooter>
-          </form>
+            </form>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
