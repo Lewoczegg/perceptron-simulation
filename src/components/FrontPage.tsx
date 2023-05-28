@@ -24,7 +24,7 @@ const FrontPage = () => {
         </Text>
         <LoadDataFromFile />
         <Button as="a" width="200px" colorScheme="teal" href="/inputs">
-          Load exaple data set
+          Load example data set
         </Button>
         <Text>What should the perceptron learning data file look like?</Text>
         <SampleDataPopover />
